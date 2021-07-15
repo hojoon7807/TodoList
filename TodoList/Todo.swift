@@ -87,10 +87,9 @@ class TodoViewModel {
     enum Section: Int, CaseIterable {
         case today
         case upcoming
-        
         var title: String {
             switch self {
-            case .today: return "Today"
+            case .today: return "Today" 
             default: return "Upcoming"
             }
         }

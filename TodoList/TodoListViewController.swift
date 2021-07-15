@@ -18,7 +18,8 @@ class TodoListViewController: UIViewController {
     @IBOutlet weak var addButton: UIButton!
     
     
-    // TODO: TodoViewModel 만들기
+    //[x] TODO: TodoViewModel 만들기
+    let todoListViewModel = TodoViewModel()
     
     
     override func viewDidLoad() {
@@ -28,7 +29,7 @@ class TodoListViewController: UIViewController {
         
         
         // TODO: 데이터 불러오기
-        
+        todoListViewModel.loadTasks()
     }
     
     @IBAction func isTodayButtonTapped(_ sender: Any) {
@@ -56,12 +57,17 @@ extension TodoListViewController {
 extension TodoListViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         // TODO: 섹션 몇개
-        return 2
+        return todoListViewModel.numOfSection
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // TODO: 섹션별 아이템 몇개
-        return 5
+        if section == 0{
+            return todoListViewModel.todayTodos.count
+        }else{
+            return todoListViewModel.upcompingTodos.count
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -69,8 +75,13 @@ extension TodoListViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TodoListCell", for: indexPath) as? TodoListCell else {
             return UICollectionViewCell()
         }
-        return cell
-        
+        var todo:Todo
+        if indexPath.section == 0{
+            todo = todoListViewModel.todayTodos[indexPath.item]
+        }else{
+            todo = todoListViewModel.upcompingTodos[indexPath.item]
+        }
+        cell.updateUI(todo: todo)
         // TODO: todo 를 이용해서 updateUI
         // TODO: doneButtonHandler 작성
         // TODO: deleteButtonHandler 작성
@@ -87,7 +98,6 @@ extension TodoListViewController: UICollectionViewDataSource {
             guard let section = TodoViewModel.Section(rawValue: indexPath.section) else {
                 return UICollectionReusableView()
             }
-            
             header.sectionTitleLabel.text = section.title
             return header
         default:
@@ -128,11 +138,7 @@ class TodoListCell: UICollectionViewCell {
     
     func updateUI(todo: Todo) {
         // TODO: 셀 업데이트 하기
-        checkButton.isSelected = todo.isDone
-        descriptionLabel.text = todo.detail
-        descriptionLabel.alpha = todo.isDone ? 0.2 : 1
-        deleteButton.isHidden = todo.isDone == false
-        showStrikeThrough(todo.isDone)
+         
     }
     
     private func showStrikeThrough(_ show: Bool) {
