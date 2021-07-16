@@ -43,7 +43,7 @@ class TodoManager {
         TodoManager.lastId = nextId
         return Todo(id: nextId, isDone: false, detail: detail, isToday: isToday )
     }
-    
+
     func addTodo(_ todo: Todo) {
         //[x]TODO: add로직 추가
         todos.append(todo)
