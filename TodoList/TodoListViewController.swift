@@ -108,6 +108,15 @@ extension TodoListViewController: UICollectionViewDataSource {
         // TODO: todo 를 이용해서 updateUI
         // TODO: doneButtonHandler 작성
         // TODO: deleteButtonHandler 작성
+        cell.doneButtonTapHandler = { isDone in
+            todo.isDone = isDone
+            self.todoListViewModel.updateTodo(todo)
+            self.collectionView.reloadData()
+        }
+        cell.deleteButtonTapHandler = {
+            self.todoListViewModel.deleteTodo(todo)
+            self.collectionView.reloadData()
+        }
         return cell
     }
     
