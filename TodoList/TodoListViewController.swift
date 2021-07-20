@@ -48,6 +48,12 @@ class TodoListViewController: UIViewController {
         // TODO: Todo 태스크 추가
         // add task to view model
         // and tableview reload or update
+        guard let detail = inputTextField.text, detail.isEmpty == false else {return}
+        let todo = TodoManager.shared.createTodo(detail: detail, isToday: isTodayButton.isSelected)
+        todoListViewModel.addTodo(todo)
+        collectionView.reloadData()
+        inputTextField.text = ""
+        isTodayButton.isSelected = false
     }
     
     // [x] TODO: BG 탭했을때, 키보드 내려오게 하기
@@ -142,7 +148,7 @@ class TodoListCell: UICollectionViewCell {
     
     var doneButtonTapHandler: ((Bool) -> Void)?
     var deleteButtonTapHandler: (() -> Void)?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         reset()
